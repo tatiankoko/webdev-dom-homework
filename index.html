@@ -8,7 +8,7 @@
 
   <body>
     <div class="container">
-      <ul class="comments">
+      <ul class="comments" id="listComments">
         <li class="comment">
           <div class="comment-header">
             <div>Глеб Фокин</div>
@@ -49,23 +49,95 @@
           type="text"
           class="add-form-name"
           placeholder="Введите ваше имя"
+          id="add-name"
         />
         <textarea
           type="textarea"
           class="add-form-text"
-          placeholder="Введите ваш коментарий"
+          placeholder="Введите ваш комментарий"
           rows="4"
+          id="add-text"
         ></textarea>
         <div class="add-form-row">
-          <button class="add-form-button">Написать</button>
+          <button class="add-form-button" id="add-button">Написать</button>
         </div>
       </div>
     </div>
   </body>
 
   <script>
-    "use strict";
-    // Код писать здесь
+    const addNameEl = document.getElementById('add-name');
+    const addTextEl = document.getElementById('add-text');
+    const addButtonEl = document.getElementById('add-button');
+
+    addNameEl.addEventListener('focus', () => {
+      addNameEl.classList.remove('error');
+    })
+
+    addTextEl.addEventListener('focus', () => {
+      addTextEl.classList.remove('error');
+    })
+
+    addButtonEl.addEventListener('click', () => {
+      if (addTextEl.value === "") {
+        highlightError(addTextEl);
+      } else if (addNameEl.value === "") {
+        highlightError(addNameEl);
+      } else {
+        sendForm();
+      }
+    })
+
+    let highlightError = (element) => {
+      element.classList.add('error');
+    }
+
+    let sendForm = () => {
+      let liEl = document.createElement('li');
+      liEl.className = "comment";
+
+      const date = new Date().toLocaleDateString(
+              'ru-RU',
+              {
+                day: '2-digit',
+                month: '2-digit',
+                year: '2-digit'
+              });
+
+      const time = new Date().toLocaleTimeString(
+              'ru-RU',
+              {
+                hour: '2-digit',
+                minute: '2-digit'
+              });
+
+      liEl.innerHTML += `
+        <div class="comment-header">
+          <div>${addNameEl.value}</div>
+          <div>${date} ${time}</div>
+        </div>
+        <div class="comment-body">
+          <div class="comment-text">
+            ${addTextEl.value}
+          </div>
+        </div>
+        <div class="comment-footer">
+          <div class="likes">
+            <span class="likes-counter">0</span>
+            <button class="like-button"></button>
+          </div>
+        </div>`;
+
+      const listEl = document.getElementById('listComments');
+
+      if (listEl) {
+        listEl.appendChild(liEl);
+
+        addTextEl.value = "";
+        addNameEl.value = "";
+      }
+    }
+
     console.log("It works!");
   </script>
 </html>
