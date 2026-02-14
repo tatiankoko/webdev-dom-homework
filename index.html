@@ -66,6 +66,76 @@
   </body>
 
   <script>
+    /* Массив комментариев */
+    const comments = [
+      {
+        name: "Глеб Фокин",
+        date: "12.02.22 12:18",
+        comment: "Это будет первый комментарий на этой странице",
+        likes: 3,
+        active: false
+      },
+      {
+        name: "Варвара Н.",
+        date: "13.02.22 19:22",
+        comment: "Мне нравится как оформлена эта страница! ❤",
+        likes: 75,
+        active: true
+      }
+    ];
+
+    /* Рендер-функция */
+    const render = () => {
+      const listEl = document.getElementById('listComments');
+
+      listEl.innerHTML = comments.map((comment, index) => {
+        const likeClass = comment.active ? "-active-like" : "";
+
+        return `
+          <li class="comment">
+            <div class="comment-header">
+              <div>${comment.name}</div>
+              <div>${comment.date}</div>
+            </div>
+            <div class="comment-body">
+              <div class="comment-text">
+                ${comment.comment}
+              </div>
+            </div>
+            <div class="comment-footer">
+              <div class="likes">
+                <span class="likes-counter">${comment.likes}</span>
+                <button class="like-button ${likeClass}" data-index="${index}"></button>
+              </div>
+            </div>
+          </li>`;
+      }).join("");
+
+      initLikeAction();
+    }
+
+    /* Обработчик клика на лайк */
+    const initLikeAction = () => {
+      const likesEl = document.querySelectorAll('.like-button');
+
+      likesEl.forEach(like => {
+        like.addEventListener('click', () => {
+          const comment = comments[like.dataset.index];
+
+          comment.active ? comment.likes-- : comment.likes++;
+          comment.active = !comment.active;
+
+          comments[like.dataset.index] = comment;
+
+          render();
+        })
+      })
+    }
+
+    /* Инициализация разметки при загрузке страницы */
+    render();
+
+    /* Обработка формы отправки: */
     const addNameEl = document.getElementById('add-name');
     const addTextEl = document.getElementById('add-text');
     const addButtonEl = document.getElementById('add-button');
@@ -79,23 +149,40 @@
     })
 
     addButtonEl.addEventListener('click', () => {
-      if (addTextEl.value === "") {
-        highlightError(addTextEl);
-      } else if (addNameEl.value === "") {
+      if (addNameEl.value.trim() === "") {
         highlightError(addNameEl);
+      } else if (addTextEl.value.trim() === "") {
+        highlightError(addTextEl);
       } else {
         sendForm();
       }
     })
 
+    /* Подсветка пустых форм ввода */
     let highlightError = (element) => {
       element.classList.add('error');
     }
 
+    /* Отправка заполненной формы */
     let sendForm = () => {
-      let liEl = document.createElement('li');
-      liEl.className = "comment";
+      const comment = {
+        name: addNameEl.value,
+        date: currentDateString(),
+        comment: addTextEl.value,
+        likes: 0,
+        active: false
+      };
 
+      comments.push(comment);
+
+      render();
+
+      addTextEl.value = "";
+      addNameEl.value = "";
+    }
+
+    /* Возвращает текущую дату и время в требуемом строковом формате */
+    const currentDateString = () => {
       const date = new Date().toLocaleDateString(
               'ru-RU',
               {
@@ -111,31 +198,7 @@
                 minute: '2-digit'
               });
 
-      liEl.innerHTML += `
-        <div class="comment-header">
-          <div>${addNameEl.value}</div>
-          <div>${date} ${time}</div>
-        </div>
-        <div class="comment-body">
-          <div class="comment-text">
-            ${addTextEl.value}
-          </div>
-        </div>
-        <div class="comment-footer">
-          <div class="likes">
-            <span class="likes-counter">0</span>
-            <button class="like-button"></button>
-          </div>
-        </div>`;
-
-      const listEl = document.getElementById('listComments');
-
-      if (listEl) {
-        listEl.appendChild(liEl);
-
-        addTextEl.value = "";
-        addNameEl.value = "";
-      }
+      return `${date} ${time}`;
     }
 
     console.log("It works!");
