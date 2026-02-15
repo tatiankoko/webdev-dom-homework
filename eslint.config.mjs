@@ -1,4 +1,4 @@
-import js from '@eslint/js'
+import pluginJs from '@eslint/js'
 import globals from 'globals'
 import { defineConfig } from 'eslint/config'
 import config from 'eslint-config-prettier'
@@ -11,7 +11,7 @@ export default defineConfig([
         extends: ['js/recommended'],
         languageOptions: { globals: globals.browser },
     },
-    js.configs.recommended,
+    pluginJs.configs.recommended,
     config,
     plugin,
 ])
