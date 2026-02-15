@@ -92,7 +92,7 @@
         const likeClass = comment.active ? "-active-like" : "";
 
         return `
-          <li class="comment">
+          <li class="comment" data-index="${index}">
             <div class="comment-header">
               <div>${comment.name}</div>
               <div>${comment.date}</div>
@@ -112,6 +112,7 @@
       }).join("");
 
       initLikeAction();
+      initCommentAction();
     }
 
     /* Обработчик клика на лайк */
@@ -119,7 +120,9 @@
       const likesEl = document.querySelectorAll('.like-button');
 
       likesEl.forEach(like => {
-        like.addEventListener('click', () => {
+        like.addEventListener('click', (event) => {
+          event.stopPropagation();
+
           const comment = comments[like.dataset.index];
 
           comment.active ? comment.likes-- : comment.likes++;
@@ -131,9 +134,6 @@
         })
       })
     }
-
-    /* Инициализация разметки при загрузке страницы */
-    render();
 
     /* Обработка формы отправки: */
     const addNameEl = document.getElementById('add-name');
@@ -166,9 +166,13 @@
     /* Отправка заполненной формы */
     let sendForm = () => {
       const comment = {
-        name: addNameEl.value,
+        name: addNameEl.value
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;"),
         date: currentDateString(),
-        comment: addTextEl.value,
+        comment: addTextEl.value
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;"),
         likes: 0,
         active: false
       };
@@ -200,6 +204,29 @@
 
       return `${date} ${time}`;
     }
+
+    /* Обработчик клика на комментарий */
+    const initCommentAction = () => {
+      const liEl = document.querySelectorAll('.comment');
+
+      liEl.forEach(li => {
+        li.addEventListener('click', () => {
+          const comment = comments[li.dataset.index];
+
+          addTextEl.value = `> В ответ ${comment.name}
+          '${comment.comment
+                  .replaceAll("&lt;", "<")
+                  .replaceAll("&gt;", ">")}'
+          `;
+
+          addTextEl.scrollIntoView();
+          addTextEl.focus();
+        })
+      })
+    }
+
+    /* Инициализация разметки при загрузке страницы */
+    render();
 
     console.log("It works!");
   </script>
