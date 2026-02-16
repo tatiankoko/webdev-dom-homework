@@ -1,9 +1,9 @@
-import {render} from "./modules/render.js";
-import {initSendForm} from "./modules/initSendForm.js";
+import { initSendForm } from "./modules/initSendForm.js"
+import { getComments } from "./modules/requests.js"
 
-/* Инициализация разметки при загрузке страницы */
-render();
+/* Получение списка всех комментариев */
+getComments()
 
 /* Обработка формы отправки */
-initSendForm();
+initSendForm()
 
