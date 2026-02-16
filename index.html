@@ -1,233 +1,62 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Проект "Комменты"</title>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
 
-  <body>
-    <div class="container">
-      <ul class="comments" id="listComments">
-        <li class="comment">
-          <div class="comment-header">
-            <div>Глеб Фокин</div>
-            <div>12.02.22 12:18</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              Это будет первый комментарий на этой странице
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">3</span>
-              <button class="like-button"></button>
-            </div>
-          </div>
-        </li>
-        <li class="comment">
-          <div class="comment-header">
-            <div>Варвара Н.</div>
-            <div>13.02.22 19:22</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              Мне нравится как оформлена эта страница! ❤
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">75</span>
-              <button class="like-button -active-like"></button>
-            </div>
-          </div>
-        </li>
-      </ul>
-      <div class="add-form">
-        <input
-          type="text"
-          class="add-form-name"
-          placeholder="Введите ваше имя"
-          id="add-name"
-        />
-        <textarea
-          type="textarea"
-          class="add-form-text"
-          placeholder="Введите ваш комментарий"
-          rows="4"
-          id="add-text"
-        ></textarea>
-        <div class="add-form-row">
-          <button class="add-form-button" id="add-button">Написать</button>
+<head>
+  <title>Проект "Комменты"</title>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div class="container">
+    <ul class="comments" id="listComments">
+      <li class="comment">
+        <div class="comment-header">
+          <div>Глеб Фокин</div>
+          <div>12.02.22 12:18</div>
         </div>
+        <div class="comment-body">
+          <div class="comment-text">
+            Это будет первый комментарий на этой странице
+          </div>
+        </div>
+        <div class="comment-footer">
+          <div class="likes">
+            <span class="likes-counter">3</span>
+            <button class="like-button"></button>
+          </div>
+        </div>
+      </li>
+      <li class="comment">
+        <div class="comment-header">
+          <div>Варвара Н.</div>
+          <div>13.02.22 19:22</div>
+        </div>
+        <div class="comment-body">
+          <div class="comment-text">
+            Мне нравится как оформлена эта страница! ❤
+          </div>
+        </div>
+        <div class="comment-footer">
+          <div class="likes">
+            <span class="likes-counter">75</span>
+            <button class="like-button -active-like"></button>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <div class="add-form">
+      <input type="text" class="add-form-name" placeholder="Введите ваше имя" id="add-name" />
+      <textarea type="textarea" class="add-form-text" placeholder="Введите ваш комментарий" rows="4"
+        id="add-text"></textarea>
+      <div class="add-form-row">
+        <button class="add-form-button" id="add-button">Написать</button>
       </div>
     </div>
-  </body>
+  </div>
+</body>
 
-  <script>
-    /* Массив комментариев */
-    const comments = [
-      {
-        name: "Глеб Фокин",
-        date: "12.02.22 12:18",
-        comment: "Это будет первый комментарий на этой странице",
-        likes: 3,
-        active: false
-      },
-      {
-        name: "Варвара Н.",
-        date: "13.02.22 19:22",
-        comment: "Мне нравится как оформлена эта страница! ❤",
-        likes: 75,
-        active: true
-      }
-    ];
+<script type="module" src="./index.js">
+</script>
 
-    /* Рендер-функция */
-    const render = () => {
-      const listEl = document.getElementById('listComments');
-
-      listEl.innerHTML = comments.map((comment, index) => {
-        const likeClass = comment.active ? "-active-like" : "";
-
-        return `
-          <li class="comment" data-index="${index}">
-            <div class="comment-header">
-              <div>${comment.name}</div>
-              <div>${comment.date}</div>
-            </div>
-            <div class="comment-body">
-              <div class="comment-text">
-                ${comment.comment}
-              </div>
-            </div>
-            <div class="comment-footer">
-              <div class="likes">
-                <span class="likes-counter">${comment.likes}</span>
-                <button class="like-button ${likeClass}" data-index="${index}"></button>
-              </div>
-            </div>
-          </li>`;
-      }).join("");
-
-      initLikeAction();
-      initCommentAction();
-    }
-
-    /* Обработчик клика на лайк */
-    const initLikeAction = () => {
-      const likesEl = document.querySelectorAll('.like-button');
-
-      likesEl.forEach(like => {
-        like.addEventListener('click', (event) => {
-          event.stopPropagation();
-
-          const comment = comments[like.dataset.index];
-
-          comment.active ? comment.likes-- : comment.likes++;
-          comment.active = !comment.active;
-
-          comments[like.dataset.index] = comment;
-
-          render();
-        })
-      })
-    }
-
-    /* Обработка формы отправки: */
-    const addNameEl = document.getElementById('add-name');
-    const addTextEl = document.getElementById('add-text');
-    const addButtonEl = document.getElementById('add-button');
-
-    addNameEl.addEventListener('focus', () => {
-      addNameEl.classList.remove('error');
-    })
-
-    addTextEl.addEventListener('focus', () => {
-      addTextEl.classList.remove('error');
-    })
-
-    addButtonEl.addEventListener('click', () => {
-      if (addNameEl.value.trim() === "") {
-        highlightError(addNameEl);
-      } else if (addTextEl.value.trim() === "") {
-        highlightError(addTextEl);
-      } else {
-        sendForm();
-      }
-    })
-
-    /* Подсветка пустых форм ввода */
-    let highlightError = (element) => {
-      element.classList.add('error');
-    }
-
-    /* Отправка заполненной формы */
-    let sendForm = () => {
-      const comment = {
-        name: addNameEl.value
-                .replaceAll("<", "&lt;")
-                .replaceAll(">", "&gt;"),
-        date: currentDateString(),
-        comment: addTextEl.value
-                .replaceAll("<", "&lt;")
-                .replaceAll(">", "&gt;"),
-        likes: 0,
-        active: false
-      };
-
-      comments.push(comment);
-
-      render();
-
-      addTextEl.value = "";
-      addNameEl.value = "";
-    }
-
-    /* Возвращает текущую дату и время в требуемом строковом формате */
-    const currentDateString = () => {
-      const date = new Date().toLocaleDateString(
-              'ru-RU',
-              {
-                day: '2-digit',
-                month: '2-digit',
-                year: '2-digit'
-              });
-
-      const time = new Date().toLocaleTimeString(
-              'ru-RU',
-              {
-                hour: '2-digit',
-                minute: '2-digit'
-              });
-
-      return `${date} ${time}`;
-    }
-
-    /* Обработчик клика на комментарий */
-    const initCommentAction = () => {
-      const liEl = document.querySelectorAll('.comment');
-
-      liEl.forEach(li => {
-        li.addEventListener('click', () => {
-          const comment = comments[li.dataset.index];
-
-          addTextEl.value = `> В ответ ${comment.name}
-          '${comment.comment
-                  .replaceAll("&lt;", "<")
-                  .replaceAll("&gt;", ">")}'
-          `;
-
-          addTextEl.scrollIntoView();
-          addTextEl.focus();
-        })
-      })
-    }
-
-    /* Инициализация разметки при загрузке страницы */
-    render();
-
-    console.log("It works!");
-  </script>
 </html>
