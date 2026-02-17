@@ -1,6 +1,8 @@
 import {highlightError} from "./highlightError.js"
 import {processedInput} from "./inputProcessing.js"
 import {postComment, getComments} from "./requests.js"
+import {updateComments} from "./inputData.js"
+import {render} from "./render.js"
 
 const addNameEl = document.getElementById('add-name')
 const addTextEl = document.getElementById('add-text')
@@ -41,8 +43,18 @@ const sendForm = () => {
     }
 
     postComment(comment)
-    getComments()
+        .then(r => r.json())
+        .then(() => {
+            getComments()
+                .then(r => r.json())
+                .then(comments => {
+                    updateComments(comments.comments)
 
-    addTextEl.value = "";
-    addNameEl.value = "";
+                    /* Инициализация разметки при загрузке страницы */
+                    render()
+
+                    addTextEl.value = ""
+                    addNameEl.value = ""
+                });
+        })
 }
