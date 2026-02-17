@@ -43,18 +43,15 @@ const sendForm = () => {
     }
 
     postComment(comment)
+        .then(() => getComments())
         .then(r => r.json())
-        .then(() => {
-            getComments()
-                .then(r => r.json())
-                .then(comments => {
-                    updateComments(comments.comments)
+        .then(comments => {
+            updateComments(comments.comments)
 
-                    /* Инициализация разметки при загрузке страницы */
-                    render()
+            /* Инициализация разметки при загрузке страницы */
+            render()
 
-                    addTextEl.value = ""
-                    addNameEl.value = ""
-                });
+            addTextEl.value = ""
+            addNameEl.value = ""
         })
 }
