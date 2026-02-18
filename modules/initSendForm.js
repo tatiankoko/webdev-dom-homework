@@ -5,7 +5,7 @@ import {render} from "./render.js"
 import {addLoadingHtml} from "./loadingHtml.js";
 import {updateComments} from "./inputData.js";
 import {catchAlert} from "./catchAlert.js";
-import {throwError} from "./throwError.js";
+import {errMessage500, throwError} from "./throwError.js";
 
 const addNameEl = document.getElementById('add-name')
 const addTextEl = document.getElementById('add-text')
@@ -71,7 +71,12 @@ const sendForm = () => {
             addNameEl.value = ""
         })
         .catch(err => {
-            catchAlert(err)
+            /* повтор запроса к API, если придет ответ с кодом ошибки 500 */
+            if (err.message === errMessage500) {
+                sendForm()
+            } else {
+                catchAlert(err)
+            }
         })
         .finally(() => {
             render()

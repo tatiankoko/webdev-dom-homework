@@ -1,10 +1,12 @@
+export const errMessage500 = 'Сервер сломался, попробуй позже'
+
 /**
  * Выбрасывает исключение в зависимости от кода ошибки
  * @param status код ответа от сервера
  */
 export const throwError = (status) => {
     if (status === 500) {
-        throw new Error('Сервер сломался, попробуй позже')
+        throw new Error(errMessage500)
     } else if (status === 400) {
         throw new Error(
             'Имя и комментарий должны быть не короче 3 символов')
