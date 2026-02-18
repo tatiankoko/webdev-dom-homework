@@ -1,8 +1,8 @@
 import {highlightError} from "./highlightError.js"
 import {processedInput} from "./inputProcessing.js"
 import {postComment, getComments} from "./requests.js"
-import {updateComments} from "./inputData.js"
-import {render} from "./render.js"
+import {renderComments} from "./render.js"
+import {addLoadingHtml} from "./loadingHtml.js";
 
 const addNameEl = document.getElementById('add-name')
 const addTextEl = document.getElementById('add-text')
@@ -28,6 +28,8 @@ export const initSendForm = () => {
         } else if (addTextEl.value.trim() === "") {
             highlightError(addTextEl)
         } else {
+            hideForm(true)
+
             sendForm()
         }
     })
@@ -46,12 +48,24 @@ const sendForm = () => {
         .then(() => getComments())
         .then(r => r.json())
         .then(comments => {
-            updateComments(comments.comments)
-
-            /* Инициализация разметки при загрузке страницы */
-            render()
+            renderComments(comments.comments)
 
             addTextEl.value = ""
             addNameEl.value = ""
+
+            hideForm(false)
         })
+}
+
+const hideForm = (hide) => {
+    const addFormEl = document.getElementById('addForm')
+
+    if (hide) {
+        addFormEl.hidden = true;
+        addFormEl.style.display = 'none';
+
+        addLoadingHtml('Комментарий добавляется...')
+    } else {
+        addFormEl.style.display = 'flex';
+    }
 }

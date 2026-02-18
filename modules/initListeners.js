@@ -1,6 +1,7 @@
 import {render} from "./render.js"
 import {comments} from "./inputData.js"
 import {processedInput} from "./inputProcessing.js";
+import {delay} from "./delay.js"
 
 /**
  * Обработчик клика на лайк
@@ -15,12 +16,24 @@ export const initLikeAction = () => {
 
             const comment = comments[like.dataset.index]
 
-            comment.isLiked ? comment.likes-- : comment.likes++
-            comment.isLiked = !comment.isLiked
+            if (comment.isLikeLoading) {
+                return;
+            }
 
-            comments[like.dataset.index] = comment
+            comment.isLikeLoading = true
+            like.classList.add('-loading-like')
 
-            render()
+            delay(1500)
+                .then(() => {
+                    comment.isLiked ? comment.likes-- : comment.likes++
+                    comment.isLiked = !comment.isLiked
+
+                    comment.isLikeLoading = false;
+
+                    comments[like.dataset.index] = comment
+
+                    render()
+                });
         })
     })
 }
