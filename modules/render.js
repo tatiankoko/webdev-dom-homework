@@ -1,6 +1,6 @@
-import { comments } from './inputData.js'
-import { initLikeAction, initCommentAction } from './initListeners.js'
-import { dateString } from "./currentDateString.js";
+import {comments, updateComments} from './inputData.js'
+import {initLikeAction, initCommentAction} from './initListeners.js'
+import {dateString} from "./currentDateString.js";
 
 /**
  * Рендер-функция
@@ -38,3 +38,21 @@ export const render = () => {
     initLikeAction()
     initCommentAction()
 }
+
+/**
+ * Обновление списка комментариев и вызов рендер-функции
+ * @param comments новый список комментариев
+ */
+export const renderComments = (comments) => {
+    updateComments(comments)
+
+    /* Инициализация разметки при загрузке страницы */
+    render()
+}
+
+/**
+ * При запуске приложения отображается сообщение о загрузке списка комментариев
+ */
+/*export const initialRender = () => {
+    addLoadingHtml('Пожалуйста, подождите, загружаю комментарии...')
+}*/
