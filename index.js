@@ -1,9 +1,18 @@
-import {render} from "./modules/render.js";
-import {initSendForm} from "./modules/initSendForm.js";
+import { initSendForm } from "./modules/initSendForm.js"
+import { getComments } from "./modules/requests.js"
+import { updateComments } from "./modules/inputData.js";
+import { render } from "./modules/render.js";
 
-/* Инициализация разметки при загрузке страницы */
-render();
+/* Получение списка всех комментариев */
+getComments()
+    .then(res => res.json())
+    .then(comments => {
+        updateComments(comments.comments)
+
+        /* Инициализация разметки при загрузке страницы */
+        render()
+    })
 
 /* Обработка формы отправки */
-initSendForm();
+initSendForm()
 

@@ -1,33 +1,34 @@
-import {highlightError} from "./highlightError.js";
-import {currentDateString} from "./currentDateString.js";
-import {comments} from "./inputData.js";
-import {processedInput} from "./inputProcessing.js";
-import {render} from "./render.js";
+import {highlightError} from "./highlightError.js"
+import {processedInput} from "./inputProcessing.js"
+import {postComment, getComments} from "./requests.js"
+import {updateComments} from "./inputData.js"
+import {render} from "./render.js"
 
-const addNameEl = document.getElementById('add-name');
-const addTextEl = document.getElementById('add-text');
+const addNameEl = document.getElementById('add-name')
+const addTextEl = document.getElementById('add-text')
 
 /**
  * Обработка формы отправки
  */
 export const initSendForm = () => {
     addNameEl.addEventListener('focus', () => {
-        addNameEl.classList.remove('error');
+        addNameEl.classList.remove('error')
     })
 
     addTextEl.addEventListener('focus', () => {
-        addTextEl.classList.remove('error');
+        addTextEl.classList.remove('error')
     })
 
-    const addButtonEl = document.getElementById('add-button');
+    const addButtonEl = document
+        .getElementById('add-button')
 
     addButtonEl.addEventListener('click', () => {
         if (addNameEl.value.trim() === "") {
-            highlightError(addNameEl);
+            highlightError(addNameEl)
         } else if (addTextEl.value.trim() === "") {
-            highlightError(addTextEl);
+            highlightError(addTextEl)
         } else {
-            sendForm();
+            sendForm()
         }
     })
 }
@@ -37,17 +38,20 @@ export const initSendForm = () => {
  */
 const sendForm = () => {
     const comment = {
-        name: processedInput(addNameEl.value),
-        date: currentDateString(),
-        comment: processedInput(addTextEl.value),
-        likes: 0,
-        active: false
-    };
+        text: processedInput(addTextEl.value),
+        name: processedInput(addNameEl.value)
+    }
 
-    comments.push(comment);
+    postComment(comment)
+        .then(() => getComments())
+        .then(r => r.json())
+        .then(comments => {
+            updateComments(comments.comments)
 
-    render();
+            /* Инициализация разметки при загрузке страницы */
+            render()
 
-    addTextEl.value = "";
-    addNameEl.value = "";
+            addTextEl.value = ""
+            addNameEl.value = ""
+        })
 }

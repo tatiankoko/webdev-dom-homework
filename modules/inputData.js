@@ -1,17 +1,15 @@
 /* Массив комментариев */
-export const comments = [
+export let comments = [
     {
-        name: "Глеб Фокин",
-        date: "12.02.22 12:18",
-        comment: "Это будет первый комментарий на этой странице",
-        likes: 3,
-        active: false
-    },
-    {
-        name: "Варвара Н.",
-        date: "13.02.22 19:22",
-        comment: "Мне нравится как оформлена эта страница! ❤",
-        likes: 75,
-        active: true
+        id: 1,
+        date: "2023-03-10T10:11:23.237Z",
+        likes: 0,
+        isLiked: false,
+        text: "Это мой первый лайк",
+        author: { name: "Глеб Фокин" }
     }
 ];
+
+export const updateComments = (newComments) => {
+    comments = newComments;
+}
