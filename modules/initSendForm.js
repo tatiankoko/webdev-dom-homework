@@ -1,8 +1,7 @@
 import {highlightError} from "./highlightError.js"
 import {processedInput} from "./inputProcessing.js"
 import {postComment, getComments, errMessage500} from "./requests.js"
-import {render} from "./render.js"
-import {addLoadingHtml} from "./loadingHtml.js";
+import {hideForm, render} from "./render.js"
 import {updateComments} from "./inputData.js";
 import {catchAlert} from "./catchAlert.js";
 
@@ -68,22 +67,4 @@ const sendForm = () => {
 
             hideForm(false)
         })
-}
-
-/**
- * Скрыть / показать форму ввода нового комментария
- * @param hide если true, то скрывает форму и добавляет новый блок информации о процессе
- * добавления комментария; если false - возвращает отображение формы
- */
-const hideForm = (hide) => {
-    const addFormEl = document.getElementById('addForm')
-
-    if (hide) {
-        addFormEl.hidden = true;
-        addFormEl.style.display = 'none';
-
-        addLoadingHtml('Комментарий добавляется...')
-    } else {
-        addFormEl.style.display = 'flex';
-    }
 }

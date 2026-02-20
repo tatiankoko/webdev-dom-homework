@@ -1,11 +1,24 @@
 import {comments, updateComments} from './inputData.js'
 import {initLikeAction, initCommentAction} from './initListeners.js'
 import {dateString} from "./currentDateString.js";
+import {getUserName} from "./requests.js";
+import {addLoadingHtml} from "./loadingHtml.js";
 
 /**
  * Рендер-функция
  */
 export const render = () => {
+    const authorizationLinkEl = document.getElementById('authorization-link');
+
+    if (getUserName() === '') {
+        authorizationLinkEl.textContent = 'Чтобы добавить комментарий, авторизуйтесь'
+        hideForm(true)
+    } else {
+        authorizationLinkEl.textContent = `Привет, ${getUserName()}`
+
+        hideForm(false)
+    }
+
     const listEl = document
         .getElementById('listComments')
 
@@ -48,4 +61,22 @@ export const renderComments = (comments) => {
 
     /* Инициализация разметки при загрузке страницы */
     render()
+}
+
+/**
+ * Скрыть / показать форму ввода нового комментария
+ * @param hide если true, то скрывает форму и добавляет новый блок информации о процессе
+ * добавления комментария; если false - возвращает отображение формы
+ */
+export const hideForm = (hide) => {
+    const addFormEl = document.getElementById('add-form')
+
+    if (hide) {
+        addFormEl.hidden = true;
+        addFormEl.style.display = 'none';
+
+        addLoadingHtml('Комментарий добавляется...')
+    } else {
+        addFormEl.style.display = 'flex';
+    }
 }
