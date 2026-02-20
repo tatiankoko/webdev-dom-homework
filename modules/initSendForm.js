@@ -1,11 +1,10 @@
 import {highlightError} from "./highlightError.js"
 import {processedInput} from "./inputProcessing.js"
-import {postComment, getComments} from "./requests.js"
+import {postComment, getComments, errMessage500} from "./requests.js"
 import {render} from "./render.js"
 import {addLoadingHtml} from "./loadingHtml.js";
 import {updateComments} from "./inputData.js";
 import {catchAlert} from "./catchAlert.js";
-import {errMessage500, throwError} from "./throwError.js";
 
 const addNameEl = document.getElementById('add-name')
 const addTextEl = document.getElementById('add-text')
@@ -49,21 +48,7 @@ const sendForm = () => {
     }
 
     postComment(comment)
-        .then(response => {
-            if (response.status === 201) {
-                return response.json()
-            } else {
-                throwError(response.status)
-            }
-        })
         .then(() => getComments())
-        .then(r => {
-            if (r.status === 200) {
-                return r.json()
-            } else {
-                throwError(r.status)
-            }
-        })
         .then(comments => {
             updateComments(comments.comments)
 
