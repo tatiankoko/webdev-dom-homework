@@ -1,4 +1,5 @@
-const endpoint = "https://wedev-api.sky.pro/api/v1/tatiankoko/comments";
+const endpoint = 'https://wedev-api.sky.pro/api/v2/tatiankoko/comments';
+
 export const errMessage500 = 'Сервер сломался, попробуй позже'
 export const errMessageCommon = 'Что-то пошло не так'
 
