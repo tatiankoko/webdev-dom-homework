@@ -1,5 +1,5 @@
 /* Массив комментариев */
-export let comments = [
+export const comments = [
     {
         id: 1,
         date: "2023-03-10T10:11:23.237Z",
@@ -11,5 +11,6 @@ export let comments = [
 ];
 
 export const updateComments = (newComments) => {
-    comments = newComments;
+    comments.length = 0
+    comments.push(...newComments)
 }
