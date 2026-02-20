@@ -113,3 +113,32 @@ export const login = (login, password)=> {
             updateUserName(user.user.name)
         })
 }
+
+export const registration = (login, name, password)=> {
+    return fetch(
+        `${authEndpoint}/login`,
+        {
+            method: "POST",
+            body: JSON.stringify({
+                login: login,
+                name: name,
+                password: password
+            })
+        })
+        .then(response => {
+            if (response.status === 201) {
+                return response.json()
+            } else if (response.status === 500) {
+                throw new Error(errMessage500)
+            } else if (response.status === 400) {
+                throw new Error(
+                    'Пользователь с таким логином уже существует')
+            } else {
+                throw new Error(errMessageCommon)
+            }
+        })
+        .then(user => {
+            updateToken(user.user.token)
+            updateUserName(user.user.name)
+        })
+}

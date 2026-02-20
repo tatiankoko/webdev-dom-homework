@@ -192,3 +192,21 @@ body {
   padding: 11px 22px;
   margin-bottom: 12px;
 }
+
+.auth-form-toggle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-toggle {
+  font-size: 16px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.label-error {
+  font-size: 16px;
+  color: coral;
+}

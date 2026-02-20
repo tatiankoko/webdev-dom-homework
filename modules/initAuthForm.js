@@ -1,9 +1,9 @@
 import {highlightError} from "./highlightError.js"
 import {login, updateToken, updateUserName} from "./requests.js"
-import {catchAlert} from "./catchAlert.js";
 
 const loginInputEl = document.getElementById('login-input')
 const passwordInputEl = document.getElementById('password-input')
+const errEL = document.getElementById('login-error')
 
 /**
  * Обработка формы авторизации
@@ -24,6 +24,8 @@ export const initAuthForm = () => {
         .getElementById('login-button')
 
     loginButtonEl.addEventListener('click', () => {
+        errEL.textContent = ''
+
         if (loginInputEl.value.trim() === "") {
             highlightError(loginInputEl)
         } else if (passwordInputEl.value.trim() === "") {
@@ -33,6 +35,12 @@ export const initAuthForm = () => {
             sendLoginForm()
             loginButtonEl.disabled = false
         }
+    })
+
+    const authToggleEl = document.getElementById('auth-toggle')
+
+    authToggleEl.addEventListener('click', () => {
+        window.location = './registration.html'
     })
 }
 
@@ -48,6 +56,6 @@ const sendLoginForm = () => {
             updateUserName('')
             updateToken('')
 
-            catchAlert(err)
+            errEL.textContent = err.message
         })
 }
