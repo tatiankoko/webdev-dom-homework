@@ -1,6 +1,6 @@
 import {highlightError} from "./highlightError.js"
 import {processedInput} from "./inputProcessing.js"
-import {postComment, getComments, errMessage500} from "./requests.js"
+import {postComment, getComments, errMessage500, getUserName} from "./requests.js"
 import {hideForm, render} from "./render.js"
 import {updateComments} from "./inputData.js";
 import {catchAlert} from "./catchAlert.js";
@@ -12,6 +12,8 @@ const addTextEl = document.getElementById('add-text')
  * Обработка формы отправки
  */
 export const initSendForm = () => {
+    addNameEl.value = getUserName()
+
     addNameEl.addEventListener('focus', () => {
         addNameEl.classList.remove('error')
     })
@@ -52,7 +54,7 @@ const sendForm = () => {
             updateComments(comments.comments)
 
             addTextEl.value = ""
-            addNameEl.value = ""
+            //addNameEl.value = ""
         })
         .catch(err => {
             /* повтор запроса к API, если придет ответ с кодом ошибки 500 */
