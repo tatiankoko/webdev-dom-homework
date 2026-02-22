@@ -2,6 +2,8 @@ import {render} from "./render.js"
 import {comments} from "./inputData.js"
 import {processedInput} from "./inputProcessing.js";
 import {delay} from "./delay.js"
+import {toggleLike} from "./requests.js";
+import {catchAlert} from "./catchAlert.js";
 
 /**
  * Обработчик клика на лайк
@@ -23,17 +25,20 @@ export const initLikeAction = () => {
             comment.isLikeLoading = true
             like.classList.add('-loading-like')
 
-            delay(1500)
-                .then(() => {
-                    comment.isLiked ? comment.likes-- : comment.likes++
-                    comment.isLiked = !comment.isLiked
-
-                    comment.isLikeLoading = false;
-
-                    comments[like.dataset.index] = comment
-
+            toggleLike(comment.id)
+                .then(result => {
+                    comment.likes = result.result.likes
+                    comment.isLiked = result.result.isLiked
+                    //comments[like.dataset.index] = comment
+                })
+                .then(()=> delay(1000))
+                .catch(err => {
+                   catchAlert(err)
+                })
+                .finally(() => {
                     render()
-                });
+                    comment.isLikeLoading = false;
+                })
         })
     })
 }

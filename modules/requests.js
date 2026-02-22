@@ -142,3 +142,23 @@ export const registration = (login, name, password)=> {
             updateUserName(user.user.name)
         })
 }
+
+export const toggleLike = (id)=> {
+    return fetch(
+        `${endpoint}/comments/${id}/toggle-like`,
+        {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${getToken()}`
+            }
+        })
+        .then(response => {
+            if (response.status === 200) {
+                return response.json()
+            } else if (response.status === 500) {
+                throw new Error(errMessage500)
+            } else {
+                throw new Error(errMessageCommon)
+            }
+        })
+}
