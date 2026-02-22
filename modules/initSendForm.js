@@ -1,4 +1,4 @@
-import {highlightError} from "./highlightError.js"
+import {highlightError, removeHighlightError} from "./highlightError.js"
 import {processedInput} from "./inputProcessing.js"
 import {postComment, getComments, errMessage500, getUserName} from "./requests.js"
 import {hideForm, render} from "./render.js"
@@ -14,21 +14,15 @@ const addTextEl = document.getElementById('add-text')
 export const initSendForm = () => {
     addNameEl.value = getUserName()
 
-    addNameEl.addEventListener('focus', () => {
-        addNameEl.classList.remove('error')
-    })
-
     addTextEl.addEventListener('focus', () => {
-        addTextEl.classList.remove('error')
+        removeHighlightError(addTextEl)
     })
 
     const addButtonEl = document
         .getElementById('add-button')
 
     addButtonEl.addEventListener('click', () => {
-        if (addNameEl.value.trim() === "") {
-            highlightError(addNameEl)
-        } else if (addTextEl.value.trim() === "") {
+        if (addTextEl.value.trim() === "") {
             highlightError(addTextEl)
         } else {
             hideForm(true)
@@ -54,7 +48,6 @@ const sendForm = () => {
             updateComments(comments.comments)
 
             addTextEl.value = ""
-            //addNameEl.value = ""
         })
         .catch(err => {
             /* повтор запроса к API, если придет ответ с кодом ошибки 500 */

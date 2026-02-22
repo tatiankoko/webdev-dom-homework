@@ -1,4 +1,4 @@
-import {highlightError} from "./highlightError.js"
+import {highlightError, removeHighlightError} from "./highlightError.js"
 import {registration, updateToken, updateUserName} from "./requests.js"
 
 const nameInputEl = document.getElementById('name-input')
@@ -15,18 +15,15 @@ export const initRegForm = () => {
     passwordInputEl.value = ''
 
     nameInputEl.addEventListener('focus', () => {
-        nameInputEl.classList.remove('error')
-        errEL.textContent = ''
+        clearInput(nameInputEl)
     })
 
     loginInputEl.addEventListener('focus', () => {
-        loginInputEl.classList.remove('error')
-        errEL.textContent = ''
+        clearInput(loginInputEl)
     })
 
     passwordInputEl.addEventListener('focus', () => {
-        passwordInputEl.classList.remove('error')
-        errEL.textContent = ''
+        clearInput(passwordInputEl)
     })
 
     const regButtonEl = document
@@ -41,7 +38,9 @@ export const initRegForm = () => {
             highlightError(passwordInputEl)
         } else {
             regButtonEl.disabled = true
+
             sendRegForm()
+
             regButtonEl.disabled = false
         }
     })
@@ -67,4 +66,9 @@ const sendRegForm = () => {
 
             errEL.textContent = err.message
         })
+}
+
+const clearInput = (element) => {
+    removeHighlightError(element)
+    errEL.textContent = ''
 }
