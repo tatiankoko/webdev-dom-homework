@@ -157,6 +157,9 @@ export const toggleLike = (id)=> {
                 return response.json()
             } else if (response.status === 500) {
                 throw new Error(errMessage500)
+            } else if (response.status === 401) {
+                throw new Error(
+                    'Чтобы поставить лайк, авторизуйтесь')
             } else {
                 throw new Error(errMessageCommon)
             }
