@@ -116,7 +116,7 @@ export const login = (login, password)=> {
 
 export const registration = (login, name, password)=> {
     return fetch(
-        `${authEndpoint}/login`,
+        `${authEndpoint}`,
         {
             method: "POST",
             body: JSON.stringify({

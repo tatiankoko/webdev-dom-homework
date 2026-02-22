@@ -16,14 +16,17 @@ export const initRegForm = () => {
 
     nameInputEl.addEventListener('focus', () => {
         nameInputEl.classList.remove('error')
+        errEL.textContent = ''
     })
 
     loginInputEl.addEventListener('focus', () => {
         loginInputEl.classList.remove('error')
+        errEL.textContent = ''
     })
 
     passwordInputEl.addEventListener('focus', () => {
         passwordInputEl.classList.remove('error')
+        errEL.textContent = ''
     })
 
     const regButtonEl = document
@@ -54,7 +57,7 @@ export const initRegForm = () => {
  * Отправка заполненной формы авторизации
  */
 const sendRegForm = () => {
-    registration(loginInputEl.value, passwordInputEl.value)
+    registration(loginInputEl.value, nameInputEl.value, passwordInputEl.value)
         .then(() => {
             window.location = './index.html'
         })

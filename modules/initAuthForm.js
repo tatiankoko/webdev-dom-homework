@@ -14,10 +14,12 @@ export const initAuthForm = () => {
 
     loginInputEl.addEventListener('focus', () => {
         loginInputEl.classList.remove('error')
+        errEL.textContent = ''
     })
 
     passwordInputEl.addEventListener('focus', () => {
         passwordInputEl.classList.remove('error')
+        errEL.textContent = ''
     })
 
     const loginButtonEl = document
