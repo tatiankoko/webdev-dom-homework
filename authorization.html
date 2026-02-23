@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Авторизация проекта "Комменты"</title>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body>
+  <div class="container">
+    <div class="auth-form">
+      <label for="login-input" class="auth-form-label">Логин</label>
+      <input type="text" class="auth-form-text" id="login-input"/>
+
+      <label for="password-input" class="auth-form-label">Пароль</label>
+      <input type="text" class="auth-form-text" id="password-input"/>
+
+      <div class="label-error" id="login-error"></div>
+
+      <div class="add-form-row">
+        <button class="add-form-button" id="login-button">Войти</button>
+      </div>
+
+      <div class="auth-form-toggle">
+        <label class="comment-header">Ещё нет аккаунта? </label>
+        <button class="auth-toggle" id="auth-toggle">Зарегистрируйтесь</button>
+      </div>
+    </div>
+  </div>
+</body>
+
+<script type="module" src="./authorization.js">
+</script>
+
+</html>

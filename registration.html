@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Регистрация проекта "Комменты"</title>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body>
+  <div class="container">
+    <div class="auth-form">
+      <label for="name-input" class="auth-form-label">Имя</label>
+      <input type="text" class="auth-form-text" id="name-input"/>
+
+      <label for="login-input" class="auth-form-label">Логин</label>
+      <input type="text" class="auth-form-text" id="login-input"/>
+
+      <label for="password-input" class="auth-form-label">Пароль</label>
+      <input type="text" class="auth-form-text" id="password-input"/>
+
+      <div class="label-error" id="reg-error"></div>
+
+      <div class="add-form-row">
+        <button class="add-form-button" id="reg-button">Регистрация</button>
+      </div>
+
+      <div class="auth-form-toggle">
+        <label class="comment-header">Уже зарегистрированы? </label>
+        <button class="auth-toggle" id="reg-toggle">Войдите</button>
+      </div>
+    </div>
+  </div>
+</body>
+
+<script type="module" src="./registration.js">
+</script>
+
+</html>
